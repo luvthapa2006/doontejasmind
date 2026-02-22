@@ -376,44 +376,42 @@
 <!-- ═══════════════════════════════════════════════════════════
      NAVBAR
 ══════════════════════════════════════════════════════════════ -->
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-400">
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50" style="background:rgba(248,250,255,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 2px 20px rgba(29,114,238,0.08);transition:all 0.4s ease;">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-18 py-4">
+    <div class="flex items-center justify-between py-3">
 
       <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center btn-grad shadow-lg">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-10 w-auto object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <!-- Fallback badge if image fails -->
+        <div class="w-10 h-10 rounded-xl items-center justify-center btn-grad shadow-lg hidden" id="logo-fallback">
           <span class="text-white font-bold text-lg">TM</span>
-        </div>
-        <div>
-          <span class="font-bold text-xl text-gray-900 group-hover:text-brand-700 transition-colors">Doon</span>
-          <span class="font-black text-xl grad-text"> TejasMind</span>
         </div>
       </a>
 
       <!-- Desktop nav links -->
       <div class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="nav-link text-brand-600 font-semibold transition-colors text-sm relative group">
+        <a href="index.html" class="nav-link font-semibold transition-colors text-sm relative group" style="color:#1d72ee;">
           Home
           <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-brand-500 to-teal-500"></span>
         </a>
-        <a href="about.html" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="about.html" class="nav-link font-medium transition-colors text-sm relative group" style="color:#4b5563;">
           About
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="courses.html" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="courses.html" class="nav-link font-medium transition-colors text-sm relative group" style="color:#4b5563;">
           Courses
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="student-zone.html" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="student-zone.html" class="nav-link font-medium transition-colors text-sm relative group" style="color:#4b5563;">
           Student Zone
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="office-zone.html" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="office-zone.html" class="nav-link font-medium transition-colors text-sm relative group" style="color:#4b5563;">
           Office Solutions
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="contact.html" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="contact.html" class="nav-link font-medium transition-colors text-sm relative group" style="color:#4b5563;">
           Contact
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
@@ -427,7 +425,7 @@
       </div>
 
       <!-- Hamburger -->
-      <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
+      <button id="menu-toggle" class="md:hidden p-2 rounded-lg transition-colors" style="color:#4b5563;" aria-label="Toggle menu">
         <svg id="menu-icon-open"  xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
@@ -435,14 +433,14 @@
   </div>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="md:hidden flex-col bg-white/95 backdrop-blur-xl border-t border-gray-100 px-6 py-6 gap-4 shadow-xl">
-    <a href="index.html"      class="text-brand-600 font-semibold">Home</a>
-    <a href="about.html"      class="text-gray-700 font-medium hover:text-brand-600 transition-colors">About</a>
-    <a href="courses.html"    class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Courses</a>
-    <a href="student-zone.html" class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Student Zone</a>
-    <a href="office-zone.html"  class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Office Solutions</a>
-    <a href="contact.html"    class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Contact</a>
-    <a href="contact.html"    class="btn-grad text-white font-semibold px-6 py-3 rounded-full text-center shadow-lg mt-2"><span>Contact Us</span></a>
+  <div id="mobile-menu" class="md:hidden flex-col bg-white border-t border-gray-100 px-6 py-6 gap-4 shadow-xl">
+    <a href="index.html"        style="color:#1d72ee;" class="font-semibold">Home</a>
+    <a href="about.html"        style="color:#374151;" class="font-medium hover:text-blue-600 transition-colors">About</a>
+    <a href="courses.html"      style="color:#374151;" class="font-medium hover:text-blue-600 transition-colors">Courses</a>
+    <a href="student-zone.html" style="color:#374151;" class="font-medium hover:text-blue-600 transition-colors">Student Zone</a>
+    <a href="office-zone.html"  style="color:#374151;" class="font-medium hover:text-blue-600 transition-colors">Office Solutions</a>
+    <a href="contact.html"      style="color:#374151;" class="font-medium hover:text-blue-600 transition-colors">Contact</a>
+    <a href="contact.html" class="btn-grad text-white font-semibold px-6 py-3 rounded-full text-center shadow-lg mt-2"><span>Contact Us</span></a>
   </div>
 </nav>
 
@@ -1127,8 +1125,13 @@
   var navbar = document.getElementById('navbar');
   if (navbar) {
     window.addEventListener('scroll', function () {
-      if (window.scrollY > 50) { navbar.classList.add('scrolled'); }
-      else { navbar.classList.remove('scrolled'); }
+      if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 30px rgba(29,114,238,0.15)';
+        navbar.style.background = 'rgba(248,250,255,0.98)';
+      } else {
+        navbar.style.boxShadow = '0 2px 20px rgba(29,114,238,0.08)';
+        navbar.style.background = 'rgba(248,250,255,0.97)';
+      }
     });
   }
 
