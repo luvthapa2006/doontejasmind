@@ -1107,75 +1107,69 @@
 </footer>
 
 
+
 <!-- ═══════════════════════════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── GSAP Register ─────────────────────────────────────────
+<script>
+(function () {
+  'use strict';
+
+  // ── GSAP + ScrollTrigger ───────────────────────────────────
   gsap.registerPlugin(ScrollTrigger);
 
-  // ── AOS Init ──────────────────────────────────────────────
-  // Mark body BEFORE init so CSS transition rules apply from the start
+  // ── AOS ───────────────────────────────────────────────────
   document.body.classList.add('aos-ready');
-  AOS.init({
-    duration: 800,
-    easing: 'ease-out-cubic',
-    once: true,
-    offset: 80,
-  });
-  setTimeout(() => { AOS.refresh(); }, 100);
+  AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 80 });
+  setTimeout(function () { AOS.refresh(); }, 200);
 
   // ── Navbar scroll effect ──────────────────────────────────
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-  });
+  var navbar = document.getElementById('navbar');
+  if (navbar) {
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 50) { navbar.classList.add('scrolled'); }
+      else { navbar.classList.remove('scrolled'); }
+    });
+  }
 
   // ── Mobile menu toggle ────────────────────────────────────
-  const menuToggle  = document.getElementById('menu-toggle');
-  const mobileMenu  = document.getElementById('mobile-menu');
-  const iconOpen    = document.getElementById('menu-icon-open');
-  const iconClose   = document.getElementById('menu-icon-close');
-
-  menuToggle.addEventListener('click', () => {
-    const isOpen = mobileMenu.classList.contains('open');
-    mobileMenu.classList.toggle('open');
-    iconOpen.classList.toggle('hidden');
-    iconClose.classList.toggle('hidden');
-  });
-
-  // Close mobile menu on link click
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('open');
-      iconOpen.classList.remove('hidden');
-      iconClose.classList.add('hidden');
+  var menuToggle = document.getElementById('menu-toggle');
+  var mobileMenu = document.getElementById('mobile-menu');
+  var iconOpen   = document.getElementById('menu-icon-open');
+  var iconClose  = document.getElementById('menu-icon-close');
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', function () {
+      var isOpen = mobileMenu.classList.contains('open');
+      mobileMenu.classList.toggle('open');
+      if (iconOpen)  iconOpen.classList.toggle('hidden', !isOpen);
+      if (iconClose) iconClose.classList.toggle('hidden', isOpen);
     });
-  });
+    mobileMenu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        mobileMenu.classList.remove('open');
+        if (iconOpen)  iconOpen.classList.remove('hidden');
+        if (iconClose) iconClose.classList.add('hidden');
+      });
+    });
+  }
 
   // ── GSAP Hero entrance ────────────────────────────────────
-  const tl = gsap.timeline({ delay: 0.2 });
+  var tl = gsap.timeline({ delay: 0.2 });
   tl.from('#hero-text .section-pill', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' })
-    .from('#hero-text h1', { opacity: 0, y: 50, duration: 0.9, ease: 'power3.out' }, '-=0.4')
-    .from('#hero-text p', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-    .from('#hero-text .flex.flex-wrap.gap-4', { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, '-=0.4')
-    .from('#hero-text .flex.flex-wrap.gap-8', { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, '-=0.3')
-    .from('#hero-visual', { opacity: 0, x: 60, duration: 1, ease: 'power3.out' }, '-=0.8');
+    .from('#hero-text h1',            { opacity: 0, y: 50, duration: 0.9, ease: 'power3.out' }, '-=0.4')
+    .from('#hero-text p',             { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+    .from('#hero-visual',             { opacity: 0, x: 60, duration: 1.0, ease: 'power3.out' }, '-=0.8');
 
-  // ── Animated counters (GSAP) ──────────────────────────────
-  const counterEls = document.querySelectorAll('.stat-num');
-  let countersStarted = false;
+  // ── Animated counters ─────────────────────────────────────
+  var counterEls = document.querySelectorAll('.stat-num');
+  var countersStarted = false;
 
   function startCounters() {
     if (countersStarted) return;
     countersStarted = true;
-    counterEls.forEach(el => {
-      const target = parseInt(el.getAttribute('data-target'), 10);
-      const obj = { val: 0 };
+    counterEls.forEach(function (el) {
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var obj = { val: 0 };
       gsap.to(obj, {
         val: target,
         duration: 2,
@@ -1190,90 +1184,86 @@
     });
   }
 
+  // Use IntersectionObserver as primary (works reliably on mobile too)
+  if ('IntersectionObserver' in window) {
+    var statsSection = document.getElementById('stats');
+    if (statsSection) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            startCounters();
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+      observer.observe(statsSection);
+    }
+  }
+  // Also use GSAP ScrollTrigger as backup
   ScrollTrigger.create({
     trigger: '#stats',
-    start: 'top 80%',
+    start: 'top 85%',
     once: true,
-    onEnter: startCounters,
-  });
-
-  // Fallback: if stats section is already in view on load
-  window.addEventListener('load', function () {
-    const statsEl = document.getElementById('stats');
-    if (statsEl) {
-      const rect = statsEl.getBoundingClientRect();
-      if (rect.top < window.innerHeight) {
-        startCounters();
-      }
-    }
+    onEnter: startCounters
   });
 
   // ── Checklist reveal ─────────────────────────────────────
-  const checkItems = document.querySelectorAll('.check-item');
-
+  var checkItems = document.querySelectorAll('.check-item');
   ScrollTrigger.create({
     trigger: '#checklist',
-    start: 'top 75%',
+    start: 'top 80%',
     once: true,
-    onEnter: () => {
-      checkItems.forEach((item, i) => {
-        setTimeout(() => item.classList.add('visible'), i * 150);
+    onEnter: function () {
+      checkItems.forEach(function (item, i) {
+        setTimeout(function () { item.classList.add('visible'); }, i * 150);
       });
     }
   });
 
-  // ── Step card tilt on hover ──────────────────────────────
-  document.querySelectorAll('.step-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      gsap.to(card, {
-        rotateY: x * 12,
-        rotateX: -y * 12,
-        duration: 0.4,
-        ease: 'power2.out',
-        transformPerspective: 800,
+  // ── Step card tilt on hover (desktop only) ───────────────
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.step-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        gsap.to(card, { rotateY: x * 12, rotateX: -y * 12, duration: 0.4, ease: 'power2.out', transformPerspective: 800 });
+      });
+      card.addEventListener('mouseleave', function () {
+        gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.5, ease: 'power2.out' });
       });
     });
-    card.addEventListener('mouseleave', () => {
-      gsap.to(card, {
-        rotateY: 0,
-        rotateX: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-      });
-    });
-  });
+  }
 
   // ── Smooth scroll ────────────────────────────────────────
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
+      var target = document.querySelector(this.getAttribute('href'));
       if (target) {
         e.preventDefault();
-        window.scrollTo({
-          top: target.offsetTop - 80,
-          behavior: 'smooth'
-        });
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
       }
     });
   });
 
   // ── Parallax orbs on mouse move ──────────────────────────
-  document.addEventListener('mousemove', (e) => {
-    const orbs = document.querySelectorAll('.orb');
-    const x = (e.clientX / window.innerWidth - 0.5) * 20;
-    const y = (e.clientY / window.innerHeight - 0.5) * 20;
-    orbs.forEach((orb, i) => {
-      const factor = (i + 1) * 0.4;
-      gsap.to(orb, {
-        x: x * factor,
-        y: y * factor,
-        duration: 1.5,
-        ease: 'power2.out',
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', function (e) {
+      var orbs = document.querySelectorAll('.orb');
+      var x = (e.clientX / window.innerWidth - 0.5) * 20;
+      var y = (e.clientY / window.innerHeight - 0.5) * 20;
+      orbs.forEach(function (orb, i) {
+        var factor = (i + 1) * 0.4;
+        gsap.to(orb, { x: x * factor, y: y * factor, duration: 1.5, ease: 'power2.out' });
       });
     });
-  });
+  }
 
-  // ── Progress bars in hero animated ─────────────�
+  // ── Lucide icons ────────────────────────────────────────
+  if (window.lucide) { lucide.createIcons(); }
+
+})();
+</script>
+
+</body>
+</html>
