@@ -387,7 +387,7 @@
 
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-2 group shrink-0">
-        <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-10 w-auto object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-12 w-auto object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
         <div class="w-10 h-10 rounded-xl items-center justify-center btn-grad shadow-lg hidden" id="logo-fallback">
           <span class="text-white font-bold text-lg">TM</span>
         </div>
@@ -1016,7 +1016,7 @@
       <!-- Brand -->
       <div class="lg:col-span-1">
         <div class="flex items-center gap-3 mb-5">
-          <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-10 w-auto object-contain" onerror="this.onerror=null;this.style.display='none';" />
+          <div style="background:#fff;border-radius:12px;padding:6px;display:inline-flex;align-items:center;justify-content:center;"><img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" style="height:52px;width:auto;object-fit:contain;display:block;" onerror="this.onerror=null;this.style.display='none';" /></div>
         </div>
         <p class="text-gray-400 text-sm leading-relaxed mb-6">
           Igniting minds and shaping careers across Uttarakhand with expert academic coaching for MBA, Law, and Nursing students.
@@ -1117,7 +1117,9 @@
 
   // ── AOS ───────────────────────────────────────────────────
   document.body.classList.add('aos-ready');
-  AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 80 });
+  document.body.classList.add('aos-ready');
+  AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:80});
+  setTimeout(function(){AOS.refresh();},150);
   setTimeout(function () { AOS.refresh(); }, 200);
 
   // ── Navbar scroll effect ──────────────────────────────────

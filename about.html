@@ -33,7 +33,7 @@
     #mobile-menu{display:none;}
     #mobile-menu.open{display:flex;}
     /* AOS fallback */
-    [data-aos]{opacity:1!important;transform:none!important;transition:none!important;}
+    body:not(.aos-ready) [data-aos]{opacity:1!important;transform:none!important;}
     .section-pill{display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 1rem;border-radius:999px;font-size:0.78rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;background:linear-gradient(135deg,rgba(29,114,238,0.12),rgba(20,184,166,0.12));border:1px solid rgba(29,114,238,0.2);color:#1d72ee;}
     .hero-about{background:linear-gradient(135deg,#0f172a 0%,#1d3461 40%,#155cdb 75%,#0d9488 100%);}
     .team-card{transition:all 0.35s ease;background:white;border-radius:1.25rem;overflow:hidden;border:1px solid #e2e8f0;}
@@ -53,7 +53,7 @@
 
       <!-- Logo -->
       <a href="index.html" class="flex items-center gap-2 group shrink-0">
-        <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-10 w-auto object-contain"
+        <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-12 w-auto object-contain"
              onerror="this.onerror=null;this.style.display='none';document.getElementById('logo-fb-ab').style.display='flex';" />
         <div id="logo-fb-ab" style="display:none;" class="w-10 h-10 rounded-xl btn-grad items-center justify-center shadow-lg">
           <span class="text-white font-bold text-lg">TM</span>
@@ -98,7 +98,7 @@
 <!-- HERO -->
 <section class="hero-about pt-28 pb-20 relative overflow-hidden">
   <div class="absolute inset-0 opacity-10" style="background-image:url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\");"></div>
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center relative" id="hero-about-text">
     <div class="section-pill mx-auto mb-6 text-blue-200 border-white/20 bg-white/10">✦ Our Story</div>
     <h1 class="font-serif text-5xl sm:text-6xl text-white leading-tight mb-6">
       About <em class="not-italic" style="background:linear-gradient(135deg,#fbbf24,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Doon TejasMind</em>
@@ -367,7 +367,7 @@
       <!-- Brand -->
       <div class="lg:col-span-1">
         <div class="flex items-center gap-3 mb-5">
-          <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-10 w-auto object-contain" onerror="this.onerror=null;this.style.display='none';" />
+          <div style="background:#fff;border-radius:12px;padding:6px;display:inline-flex;align-items:center;justify-content:center;"><img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" style="height:52px;width:auto;object-fit:contain;display:block;" onerror="this.onerror=null;this.style.display='none';" /></div>
         </div>
         <p class="text-gray-400 text-sm leading-relaxed mb-6">
           Igniting minds and shaping careers across Uttarakhand with expert academic coaching for MBA, Law, and Nursing students.
@@ -454,7 +454,9 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 60 });
+  document.body.classList.add('aos-ready');
+  AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:80});
+  setTimeout(function(){AOS.refresh();},150);
       mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mobileMenu.classList.remove('open');
@@ -493,6 +495,11 @@
         if (iconClose) iconClose.classList.add('hidden');
       });
     });
+  }
+
+  // Hero entrance animation
+  if(document.getElementById('hero-about-text')){
+    gsap.from('#hero-about-text > *',{opacity:0,y:40,duration:0.8,stagger:0.15,ease:'power3.out',delay:0.2});
   }
 </script>
 </body>
