@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Courses — Doon TejasMind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { outfit: ['Outfit','sans-serif'], serif: ['DM Serif Display','serif'] } } }
+    }
+  </script>
+  <style>
+    *{box-sizing:border-box;}
+    body{font-family:'Outfit',sans-serif;background:#f8faff;color:#1a1a2e;overflow-x:hidden;}
+    .grad-text{background:linear-gradient(135deg,#1d72ee 0%,#14b8a6 60%,#fbbf24 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    #navbar{transition:all 0.4s ease;}
+    #navbar.scrolled{background:rgba(248,250,255,0.92);backdrop-filter:blur(20px);box-shadow:0 4px 30px rgba(29,114,238,0.08);}
+    .btn-grad{background:linear-gradient(135deg,#1d72ee,#14b8a6);transition:all 0.35s ease;position:relative;overflow:hidden;}
+    .btn-grad::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#14b8a6,#1d72ee);opacity:0;transition:opacity 0.35s ease;}
+    .btn-grad:hover::after{opacity:1;}
+    .btn-grad span{position:relative;z-index:1;}
+    .btn-grad:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(29,114,238,0.4);}
+    .hero-courses{background:linear-gradient(135deg,#0f172a 0%,#1d3461 40%,#155cdb 75%,#0d9488 100%);}
+    .orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:floatOrb 8s ease-in-out infinite alternate;}
+    @keyframes floatOrb{from{transform:translateY(0) scale(1);}to{transform:translateY(-25px) scale(1.05);}}
+    .footer-border{height:4px;background:linear-gradient(90deg,#1d72ee,#14b8a6,#fbbf24,#f43f5e,#1d72ee);background-size:200% 100%;animation:borderFlow 4s linear infinite;}
+    @keyframes borderFlow{from{background-position:0% 0%;}to{background-position:200% 0%;}}
+    #mobile-menu{display:none;}
+    #mobile-menu.open{display:flex;}
+    .section-pill{display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 1rem;border-radius:999px;font-size:0.78rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;background:linear-gradient(135deg,rgba(29,114,238,0.12),rgba(20,184,166,0.12));border:1px solid rgba(29,114,238,0.2);color:#1d72ee;}
+    /* Course tab navigation */
+    .tab-btn{padding:0.75rem 1.5rem;border-radius:999px;font-weight:600;font-size:0.875rem;transition:all 0.3s ease;border:2px solid transparent;cursor:pointer;}
+    .tab-btn.active{color:white;box-shadow:0 8px 20px rgba(29,114,238,0.3);}
+    .tab-btn:not(.active){background:white;color:#64748b;border-color:#e2e8f0;}
+    .tab-btn:not(.active):hover{border-color:#1d72ee;color:#1d72ee;}
+    /* Course content panels */
+    .course-panel{display:none;}
+    .course-panel.active{display:block;}
+    /* Semester accordion */
+    .sem-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:1rem 1.25rem;border-radius:0.75rem;background:#f8faff;border:1px solid #e2e8f0;transition:all 0.3s ease;user-select:none;}
+    .sem-header:hover{background:#eff6ff;border-color:#bce3ff;}
+    .sem-header.open{background:#eff6ff;border-color:#1d72ee;}
+    .sem-body{display:none;padding:1rem 1.25rem;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 0.75rem 0.75rem;background:white;}
+    .sem-body.open{display:block;}
+    .sem-icon{transition:transform 0.3s ease;}
+    .sem-icon.open{transform:rotate(180deg);}
+    /* Subject tag */
+    .subject-tag{display:inline-flex;align-items:center;gap:0.35rem;padding:0.3rem 0.75rem;border-radius:999px;font-size:0.78rem;font-weight:500;margin:0.2rem;}
+    /* Benefit card */
+    .benefit-item{display:flex;align-items:flex-start;gap:0.75rem;padding:0.75rem;border-radius:0.75rem;background:#f8faff;border:1px solid #e2e8f0;}
+    /* Testimonial */
+    .testi-card{background:white;border-radius:1.25rem;padding:1.5rem;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(29,114,238,0.07);transition:all 0.35s ease;}
+    .testi-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(29,114,238,0.13);}
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between py-3">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="tejasmind.png" alt="Doon TejasMind" class="h-10 w-auto object-contain"
+             onerror="this.onerror=null;this.style.display='none';document.getElementById('logo-fb-cr').style.display='flex';" />
+        <div id="logo-fb-cr" style="display:none;" class="w-10 h-10 rounded-xl btn-grad items-center justify-center shadow-lg">
+          <span class="text-white font-bold text-lg">TM</span>
+        </div>
+        <div>
+          <span class="font-bold text-xl text-gray-900 group-hover:text-blue-700 transition-colors">Doon</span>
+          <span class="font-black text-xl grad-text"> TejasMind</span>
+        </div>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors relative group">Home<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 group-hover:w-full transition-all duration-300"></span></a>
+        <a href="about.html" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors relative group">About<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 group-hover:w-full transition-all duration-300"></span></a>
+        <a href="courses.html" class="text-blue-600 font-semibold text-sm relative">Courses<span class="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-teal-400"></span></a>
+        <a href="student-zone.html" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors relative group">Student Zone<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 group-hover:w-full transition-all duration-300"></span></a>
+        <a href="office-zone.html" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors relative group">Office Solutions<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 group-hover:w-full transition-all duration-300"></span></a>
+        <a href="contact.html" class="text-gray-600 hover:text-blue-600 font-medium text-sm transition-colors relative group">Contact<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 group-hover:w-full transition-all duration-300"></span></a>
+      </div>
+      <a href="contact.html" class="hidden md:inline-flex btn-grad text-white text-sm font-semibold px-6 py-2.5 rounded-full shadow-lg"><span>Get In Touch</span></a>
+      <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
+        <svg id="menu-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg id="menu-icon-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="md:hidden flex-col bg-white/95 backdrop-blur-xl border-t border-gray-100 px-6 py-6 gap-4 shadow-xl">
+    <a href="index.html" class="text-gray-700 font-medium hover:text-blue-600 transition-colors">Home</a>
+    <a href="about.html" class="text-gray-700 font-medium hover:text-blue-600 transition-colors">About</a>
+    <a href="courses.html" class="text-blue-600 font-semibold">Courses</a>
+    <a href="student-zone.html" class="text-gray-700 font-medium hover:text-blue-600 transition-colors">Student Zone</a>
+    <a href="office-zone.html" class="text-gray-700 font-medium hover:text-blue-600 transition-colors">Office Solutions</a>
+    <a href="contact.html" class="text-gray-700 font-medium hover:text-blue-600 transition-colors">Contact</a>
+    <a href="contact.html" class="btn-grad text-white font-semibold px-6 py-3 rounded-full text-center shadow-lg mt-2"><span>Get In Touch</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-courses pt-32 pb-24 relative overflow-hidden">
+  <div class="orb w-80 h-80 bg-blue-500/20 -top-10 -left-20" style="animation-delay:0s;"></div>
+  <div class="orb w-60 h-60 bg-teal-400/20 bottom-0 right-10" style="animation-delay:2s;"></div>
+  <div class="orb w-40 h-40 bg-amber-400/15 top-20 right-1/3" style="animation-delay:1s;"></div>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative" id="hero-courses-text">
+    <div class="section-pill mx-auto mb-5 text-blue-200 border-white/20 bg-white/10">🎓 Academic Programs</div>
+    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-5">
+      Welcome to<br/>
+      <em class="not-italic" style="background:linear-gradient(135deg,#fbbf24,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Doon TejasMind</em>
+    </h1>
+    <p class="text-blue-100/85 text-lg max-w-2xl mx-auto leading-relaxed mb-6">Our Courses for Students Already Enrolled in <strong class="text-white">MBA (HRM)</strong>, <strong class="text-white">LLB</strong>, and <strong class="text-white">Nursing</strong> Programs</p>
+    <!-- Course jump buttons -->
+    <div class="flex flex-wrap justify-center gap-3 mt-8">
+      <a href="#mba" class="px-6 py-3 rounded-full bg-white/15 border border-white/30 text-white text-sm font-semibold hover:bg-white/25 transition-all">💼 MBA (HRM)</a>
+      <a href="#llb" class="px-6 py-3 rounded-full bg-white/15 border border-white/30 text-white text-sm font-semibold hover:bg-white/25 transition-all">⚖️ LLB</a>
+      <a href="#nursing" class="px-6 py-3 rounded-full bg-white/15 border border-white/30 text-white text-sm font-semibold hover:bg-white/25 transition-all">🩺 Nursing</a>
+    </div>
+  </div>
+  <svg class="absolute bottom-0 left-0 right-0" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C360,0 1080,60 1440,20 L1440,60 L0,60 Z" fill="#f8faff"/>
+  </svg>
+</section>
+
+<!-- ── MBA SECTION ─────────────────────────────────────────── -->
+<section id="mba" class="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-10 items-start">
+
+      <!-- Left sticky info -->
+      <div class="lg:w-80 shrink-0" data-aos="fade-right">
+        <div class="bg-white rounded-2xl p-7 shadow-lg border border-blue-100 sticky top-24">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 shadow-md" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">💼</div>
+          <div class="text-xs font-bold text-blue-500 uppercase tracking-wider mb-1">Business & Management</div>
+          <h2 class="text-2xl font-black text-gray-900 mb-3">MBA (HRM)</h2>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Academic Support Program tailored for students currently pursuing MBA in Human Resource Management.</p>
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-blue-500 font-bold">✓</span> 4 Semesters Covered</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-blue-500 font-bold">✓</span> Case Study Analysis</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-blue-500 font-bold">✓</span> Exam Preparation</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-blue-500 font-bold">✓</span> Live + Recorded Sessions</div>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-4 text-sm text-blue-700 font-medium mb-5">
+            👥 <span class="font-semibold">Who Can Join:</span> Students currently enrolled in MBA (HRM) programs in any college/university.
+          </div>
+          <a href="contact.html" class="btn-grad text-white font-bold px-6 py-3 rounded-xl w-full text-sm text-center block shadow-lg"><span>Enrol Now</span></a>
+        </div>
+      </div>
+
+      <!-- Right content -->
+      <div class="flex-1" data-aos="fade-left">
+        <div class="section-pill mb-4">📘 Semester-Wise Coverage</div>
+        <h3 class="text-3xl font-black text-gray-900 mb-3">MBA Human Resource <span class="grad-text">Management</span></h3>
+        <p class="text-gray-500 mb-8 leading-relaxed">We provide semester-wise academic assistance, conceptual guidance, case study analysis, and exam preparation support aligned with your university syllabus.</p>
+
+        <div class="space-y-3">
+          <!-- Sem 1 -->
+          <div class="rounded-xl overflow-hidden border border-gray-200">
+            <div class="sem-header open" onclick="toggleSem(this)">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 font-black text-sm flex items-center justify-center">I</span>
+                <span class="font-semibold text-gray-800">Semester I</span>
+              </div>
+              <svg class="sem-icon open w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="sem-body open">
+              <div class="flex flex-wrap">
+                <span class="subject-tag bg-blue-50 text-blue-700 border border-blue-100">Management Principles</span>
+                <span class="subject-tag bg-blue-50 text-blue-700 border border-blue-100">Organizational Behaviour</span>
+                <span class="subject-tag bg-blue-50 text-blue-700 border border-blue-100">Accounting</span>
+                <span class="subject-tag bg-blue-50 text-blue-700 border border-blue-100">Economics</span>
+                <span class="subject-tag bg-blue-50 text-blue-700 border border-blue-100">Business Communication</span>
+              </div>
+            </div>
+          </div>
+          <!-- Sem 2 -->
+          <div class="rounded-xl overflow-hidden border border-gray-200">
+            <div class="sem-header" onclick="toggleSem(this)">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 font-black text-sm flex items-center justify-center">II</span>
+                <span class="font-semibold text-gray-800">Semester II</span>
+              </div>
+              <svg class="sem-icon w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="sem-body">
+              <div class="flex flex-wrap">
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">HRM Fundamentals</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Business Law</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Research Methodology</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Industrial Relations</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Performance Management</span>
+              </div>
+            </div>
+          </div>
+          <!-- Sem 3 -->
+          <div class="rounded-xl overflow-hidden border border-gray-200">
+            <div class="sem-header" onclick="toggleSem(this)">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 font-black text-sm flex items-center justify-center">III</span>
+                <span class="font-semibold text-gray-800">Semester III</span>
+              </div>
+              <svg class="sem-icon w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="sem-body">
+              <div class="flex flex-wrap">
+                <span class="subject-tag bg-amber-50 text-amber-700 border border-amber-100">HRD</span>
+                <span class="subject-tag bg-amber-50 text-amber-700 border border-amber-100">Labour Legislation</span>
+                <span class="subject-tag bg-amber-50 text-amber-700 border border-amber-100">Compensation Management</span>
+                <span class="subject-tag bg-amber-50 text-amber-700 border border-amber-100">HR Analytics</span>
+                <span class="subject-tag bg-amber-50 text-amber-700 border border-amber-100">Industrial Disputes Act</span>
+              </div>
+            </div>
+          </div>
+          <!-- Sem 4 -->
+          <div class="rounded-xl overflow-hidden border border-gray-200">
+            <div class="sem-header" onclick="toggleSem(this)">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-pink-100 text-pink-700 font-black text-sm flex items-center justify-center">IV</span>
+                <span class="font-semibold text-gray-800">Semester IV</span>
+              </div>
+              <svg class="sem-icon w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="sem-body">
+              <div class="flex flex-wrap">
+                <span class="subject-tag bg-pink-50 text-pink-700 border border-pink-100">Strategic HRM</span>
+                <span class="subject-tag bg-pink-50 text-pink-700 border border-pink-100">Global HR Practices</span>
+                <span class="subject-tag bg-pink-50 text-pink-700 border border-pink-100">HRIS</span>
+                <span class="subject-tag bg-pink-50 text-pink-700 border border-pink-100">Dissertation & Viva</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LLB SECTION ─────────────────────────────────────────── -->
+<section id="llb" class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row-reverse gap-10 items-start">
+      <!-- Right sticky info -->
+      <div class="lg:w-80 shrink-0" data-aos="fade-left">
+        <div class="bg-white rounded-2xl p-7 shadow-lg border border-teal-100 sticky top-24">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 shadow-md" style="background:linear-gradient(135deg,#ccfbf1,#99f6e4);">⚖️</div>
+          <div class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-1">Law & Governance</div>
+          <h2 class="text-2xl font-black text-gray-900 mb-3">LLB</h2>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Specialized academic support for LLB students focusing on conceptual clarity, case law understanding, and semester preparation.</p>
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-teal-500 font-bold">✓</span> 3-Year Coverage</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-teal-500 font-bold">✓</span> Case Law Analysis</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-teal-500 font-bold">✓</span> Moot Court Prep</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="text-teal-500 font-bold">✓</span> Structured Academic Support</div>
+          </div>
+          <div class="bg-teal-50 rounded-xl p-4 text-sm text-teal-700 font-medium mb-5">
+            👥 <span class="font-semibold">Who Can Join:</span> Students already enrolled in LLB programs seeking clarity, deeper understanding, and structured support.
+          </div>
+          <a href="contact.html" class="w-full py-3 rounded-xl text-sm font-bold text-center block border-2 border-teal-500 text-teal-600 hover:bg-teal-50 transition-colors">Enrol Now</a>
+        </div>
+      </div>
+
+      <!-- Left content -->
+      <div class="flex-1" data-aos="fade-right">
+        <div class="section-pill mb-4" style="background:linear-gradient(135deg,rgba(20,184,166,0.12),rgba(20,184,166,0.06));border-color:rgba(20,184,166,0.3);color:#0d9488;">⚖️ Core Subjects Covered</div>
+        <h3 class="text-3xl font-black text-gray-900 mb-3">LLB — Legal <span style="background:linear-gradient(135deg,#14b8a6,#0d9488);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Studies</span></h3>
+        <p class="text-gray-500 mb-8 leading-relaxed">We provide structured guidance across all three years of LLB, helping students build conceptual clarity and confidence in the courtroom and examinations.</p>
+
+        <div class="space-y-3">
+          <!-- Year 1 -->
+          <div class="rounded-xl overflow-hidden border border-gray-200">
+            <div class="sem-header open" onclick="toggleSem(this)" style="background:#f0fdf4;">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 font-black text-sm flex items-center justify-center">1</span>
+                <span class="font-semibold text-gray-800">Year 1</span>
+              </div>
+              <svg class="sem-icon open w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="sem-body open">
+              <div class="flex flex-wrap">
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Constitutional Law</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Law of Contract</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Law of Torts</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Family Law</span>
+                <span class="subject-tag bg-teal-50 text-teal-700 border border-teal-100">Legal Methods</span>
+              </div>
+            </div>
+          </div>
+          <!-- Year 2 -->
+          <div class="rounded-xl overflow-hidden border border-gray-200">
+            <div class="sem-header" onclick="toggleSem(this)">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 font-black text-sm flex items-center justify-center">2</span>
+                <span class="font-semibold text-gray-800">Year 2</span>
+              </div>
+              <svg class="sem-icon w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="sem-body">
+              <div class="flex flex-wrap">
+                <span class="subject-tag bg-cyan-50 text-cyan-700 border border-cyan-100">Criminal Law</span>
+                <span class="subject-tag bg-cyan-50 text-cyan-700 border border-cyan-100">Property Law</span>
+                <span class="subject-tag bg-cyan-50 text-cyan-700 border border-cyan-100">Company Law</span>
+                <span class="subject-tag bg-cyan-50 text-cyan-700 border border-cyan-100">Law of Evidence</span>
+                <span class="subject-tag bg-cyan-50 text-cyan-700 border border-cyan-100">Labour Law</span>
+              </div>
+            </div>
+          </div>
+          <!-- Year 3 -->
+          <div class="rounded-xl overflow-hidden border border-gray-200">
+            <div class="sem-header" onclick="toggleSem(this)">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 font-black text-sm flex items-center justify-center">3</span>
+                <span class="font-semibold text-gray-800">Year 3</span>
+              </div>
+              <svg class="sem-icon w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+            <div class="sem-body">
+              <div class="flex flex-wrap">
+                <span class="subject-tag bg-emerald-50 text-emerald-700 border border-emerald-100">Civil Procedure Code (CPC)</span>
+                <span class="subject-tag bg-emerald-50 text-emerald-700 border border-emerald-100">Criminal Procedure Code (CrPC)</span>
+                <span class="subject-tag bg-emerald-50 text-emerald-700 border border-emerald-100">Administrative Law</span>
+                <span class="subject-tag bg-emerald-50 text-emerald-700 border border-emerald-100">Professional Ethics</span>
+                <span class="subject-tag bg-emerald-50 text-emerald-700 border border-emerald-100">Moot Court Exercises</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NURSING SECTION ──────────────────────────────────────── -->
+<section id="nursing" class="py-20 bg-gradient-to-br from-pink-50 to-rose-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12" data-aos="fade-up">
+      <div class="section-pill mx-auto mb-4" style="background:linear-gradient(135deg,rgba(244,63,94,0.1),rgba(251,113,133,0.06));border-color:rgba(244,63,94,0.2);color:#e11d48;">🩺 Health Sciences</div>
+      <h3 class="text-4xl font-black text-gray-900 mb-3">Nursing Programs <span style="background:linear-gradient(135deg,#f43f5e,#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">(BSc | MSc | GNM)</span></h3>
+      <p class="text-gray-500 max-w-2xl mx-auto">Comprehensive, year-wise online coaching aligned with the syllabi of Indian Nursing Council (INC) and major universities.</p>
+    </div>
+
+    <!-- Nursing tabs -->
+    <div class="flex flex-wrap justify-center gap-3 mb-10" data-aos="fade-up" data-aos-delay="100">
+      <button class="tab-btn active" style="background:linear-gradient(135deg,#f43f5e,#fb7185);" onclick="switchNursingTab('bsc', this)">BSc Nursing (4 Years)</button>
+      <button class="tab-btn" onclick="switchNursingTab('msc', this)">MSc Nursing (2 Years)</button>
+      <button class="tab-btn" onclick="switchNursingTab('gnm', this)">GNM (3 Years)</button>
+    </div>
+
+    <!-- BSc Panel -->
+    <div id="panel-bsc" class="course-panel active" data-aos="fade-up">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-2xl p-6 border border-pink-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-black text-sm mb-4">1st</div>
+          <h4 class="font-bold text-gray-900 mb-3">1st Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Anatomy & Physiology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Microbiology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Nutrition</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Psychology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Nursing Foundation</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>English</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-rose-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-black text-sm mb-4">2nd</div>
+          <h4 class="font-bold text-gray-900 mb-3">2nd Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Sociology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Medical-Surgical Nursing I</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Pharmacology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Pathology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Genetics</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Communication</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-fuchsia-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-fuchsia-100 text-fuchsia-600 flex items-center justify-center font-black text-sm mb-4">3rd</div>
+          <h4 class="font-bold text-gray-900 mb-3">3rd Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Child Health Nursing</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Mental Health Nursing</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Medical-Surgical Nursing II</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Research & Statistics</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-purple-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-black text-sm mb-4">4th</div>
+          <h4 class="font-bold text-gray-900 mb-3">4th Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-purple-400 mt-0.5">•</span>Community Health Nursing II</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-purple-400 mt-0.5">•</span>Nursing Management</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-purple-400 mt-0.5">•</span>Research Project</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-purple-400 mt-0.5">•</span>Internship Preparation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MSc Panel -->
+    <div id="panel-msc" class="course-panel">
+      <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl p-6 border border-pink-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-black text-sm mb-4">1st</div>
+          <h4 class="font-bold text-gray-900 mb-3">1st Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Nursing Education</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Advanced Nursing Practice</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Nursing Research & Statistics</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Clinical Specialty I</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-rose-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-black text-sm mb-4">2nd</div>
+          <h4 class="font-bold text-gray-900 mb-3">2nd Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Nursing Management</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Nursing Research Project</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Clinical Specialty II</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Dissertation & Viva</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- GNM Panel -->
+    <div id="panel-gnm" class="course-panel">
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="bg-white rounded-2xl p-6 border border-pink-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-black text-sm mb-4">1st</div>
+          <h4 class="font-bold text-gray-900 mb-3">1st Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Anatomy & Physiology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Microbiology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Psychology</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Fundamentals of Nursing</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-pink-400 mt-0.5">•</span>Community Health Nursing I</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-rose-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-black text-sm mb-4">2nd</div>
+          <h4 class="font-bold text-gray-900 mb-3">2nd Year</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Medical-Surgical Nursing I & II</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Mental Health Nursing</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-rose-400 mt-0.5">•</span>Child Health Nursing</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-fuchsia-100 shadow-md">
+          <div class="w-10 h-10 rounded-xl bg-fuchsia-100 text-fuchsia-600 flex items-center justify-center font-black text-sm mb-4">3rd</div>
+          <h4 class="font-bold text-gray-900 mb-3">3rd Year + Internship</h4>
+          <ul class="space-y-1.5">
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Midwifery & Gynaecological Nursing</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Community Health Nursing II</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Health Education & Communication</li>
+            <li class="text-xs text-gray-600 flex gap-1.5"><span class="text-fuchsia-400 mt-0.5">•</span>Clinical Rotations (Internship)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Who Can Enroll -->
+    <div class="mt-10 bg-white rounded-2xl p-6 border border-pink-100 shadow-md" data-aos="fade-up">
+      <div class="flex flex-col sm:flex-row gap-6">
+        <div class="flex-1">
+          <div class="font-bold text-gray-900 mb-2">🎓 Who Can Enrol</div>
+          <ul class="space-y-1.5 text-sm text-gray-600">
+            <li class="flex gap-2"><span class="text-pink-500">•</span>Students already enrolled in BSc, MSc, or GNM Nursing courses</li>
+            <li class="flex gap-2"><span class="text-pink-500">•</span>Those seeking better semester results and conceptual clarity</li>
+            <li class="flex gap-2"><span class="text-pink-500">•</span>Students wanting academic guidance aligned with INC & university syllabi</li>
+          </ul>
+        </div>
+        <a href="contact.html" class="self-center shrink-0" style="background:linear-gradient(135deg,#f43f5e,#fb7185);color:white;padding:0.875rem 2rem;border-radius:0.75rem;font-weight:700;font-size:0.875rem;display:inline-block;transition:all 0.3s ease;box-shadow:0 8px 20px rgba(244,63,94,0.3);">Enrol Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BENEFITS & WHO CAN ENROLL ──────────────────────────── -->
+<section class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12" data-aos="fade-up">
+      <div class="section-pill mx-auto mb-4">✨ Why Choose Us</div>
+      <h2 class="text-4xl font-black text-gray-900">Benefits of Doon TejasMind's <span class="grad-text">Academic Coaching</span></h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
+      <div class="benefit-item" data-aos="zoom-in" data-aos-delay="0"><div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-lg shrink-0">📅</div><div class="text-sm text-gray-700 font-medium">Year-wise and topic-wise conceptual clarity</div></div>
+      <div class="benefit-item" data-aos="zoom-in" data-aos-delay="60"><div class="w-9 h-9 rounded-xl bg-teal-100 flex items-center justify-center text-lg shrink-0">🎥</div><div class="text-sm text-gray-700 font-medium">Live + recorded online sessions</div></div>
+      <div class="benefit-item" data-aos="zoom-in" data-aos-delay="120"><div class="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-lg shrink-0">📋</div><div class="text-sm text-gray-700 font-medium">Aligned with INC & university syllabi</div></div>
+      <div class="benefit-item" data-aos="zoom-in" data-aos-delay="180"><div class="w-9 h-9 rounded-xl bg-pink-100 flex items-center justify-center text-lg shrink-0">📊</div><div class="text-sm text-gray-700 font-medium">Regular assessments & progress tracking</div></div>
+      <div class="benefit-item" data-aos="zoom-in" data-aos-delay="240"><div class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-lg shrink-0">🧪</div><div class="text-sm text-gray-700 font-medium">Focus on both theory and practical understanding</div></div>
+      <div class="benefit-item" data-aos="zoom-in" data-aos-delay="300"><div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center text-lg shrink-0">👨‍🏫</div><div class="text-sm text-gray-700 font-medium">Expert mentors throughout the semester</div></div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="text-center mb-10" data-aos="fade-up">
+      <div class="section-pill mx-auto mb-4">⭐ Testimonials</div>
+      <h2 class="text-3xl font-black text-gray-900">What Our <span class="grad-text">Students Say</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="testi-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="flex text-amber-400 text-sm mb-3">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4 italic">"Helped me clear HR concepts and improve grades."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-xl">👩‍🎓</div>
+          <div>
+            <div class="font-bold text-gray-900 text-sm">Ritika Sharma</div>
+            <div class="text-xs text-gray-500">MBA HRM Student</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex text-amber-400 text-sm mb-3">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4 italic">"Law feels much easier with their structured guidance."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-xl">👨‍⚖️</div>
+          <div>
+            <div class="font-bold text-gray-900 text-sm">Sourav Das</div>
+            <div class="text-xs text-gray-500">LLB Student</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="flex text-amber-400 text-sm mb-3">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4 italic">"The Nursing subject-wise coaching helped me top my semester!"</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-xl">👩‍⚕️</div>
+          <div>
+            <div class="font-bold text-gray-900 text-sm">Riya Paul</div>
+            <div class="text-xs text-gray-500">BSc Nursing Student</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="mt-16 rounded-3xl p-10 text-center" style="background:linear-gradient(135deg,#0f172a,#1d3461,#155cdb);" data-aos="zoom-in">
+      <h3 class="text-3xl font-black text-white mb-3">Ready to Boost Your Grades?</h3>
+      <p class="text-blue-200 mb-7">Join thousands of students already learning with Doon TejasMind.</p>
+      <a href="contact.html" class="btn-grad text-white font-bold px-10 py-4 rounded-full text-base shadow-2xl inline-flex items-center gap-2">
+        <span>Get In Touch With Us</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5-5 5M6 12h12"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-gray-400">
+  <div class="footer-border"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-3">
+      <img src="tejasmind.png" alt="Logo" class="h-8 w-auto object-contain" onerror="this.style.display='none';" />
+      <span class="font-bold text-white text-sm">Doon <span style="background:linear-gradient(135deg,#1d72ee,#14b8a6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">TejasMind</span></span>
+    </div>
+    <p class="text-sm">© 2025 Doon TejasMind. All rights reserved.</p>
+    <div class="flex gap-5 text-xs">
+      <a href="index.html" class="hover:text-white transition-colors">Home</a>
+      <a href="courses.html" class="text-blue-400">Courses</a>
+      <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:50});
+
+  // Navbar
+  const navbar=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>50));
+
+  // Mobile menu
+  const menuToggle=document.getElementById('menu-toggle');
+  const mobileMenu=document.getElementById('mobile-menu');
+  const iconOpen=document.getElementById('menu-icon-open');
+  const iconClose=document.getElementById('menu-icon-close');
+  menuToggle.addEventListener('click',()=>{
+    mobileMenu.classList.toggle('open');
+    iconOpen.classList.toggle('hidden');
+    iconClose.classList.toggle('hidden');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    mobileMenu.classList.remove('open');
+    iconOpen.classList.remove('hidden');
+    iconClose.classList.add('hidden');
+  }));
+
+  // Hero entrance
+  gsap.from('#hero-courses-text > *',{opacity:0,y:40,duration:0.8,stagger:0.15,ease:'power3.out',delay:0.2});
+
+  // Accordion toggle
+  function toggleSem(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.sem-icon');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    header.classList.toggle('open', !isOpen);
+    icon.classList.toggle('open', !isOpen);
+  }
+
+  // Nursing tabs
+  function switchNursingTab(tab, btn) {
+    // Hide all panels
+    document.querySelectorAll('.course-panel').forEach(p => p.classList.remove('active'));
+    // Deactivate all tab buttons
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
+    });
+    // Show selected
+    document.getElementById('panel-' + tab).classList.add('active');
+    btn.classList.add('active');
+    btn.style.background = 'linear-gradient(135deg,#f43f5e,#fb7185)';
+    btn.style.color = 'white';
+    btn.style.boxShadow = '0 8px 20px rgba(244,63,94,0.3)';
+  }
+
+  // Smooth scroll for hash links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); window.scrollTo({top: target.offsetTop - 90, behavior:'smooth'}); }
+    });
+  });
+</script>
+</body>
+</html>
