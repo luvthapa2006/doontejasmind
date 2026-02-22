@@ -273,18 +273,10 @@
       transform: translateX(0);
     }
 
-    /* ── AOS fallback: ensure content never stays invisible ── */
-    [data-aos] {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
-    /* Re-enable AOS transitions after JS loads */
-    body.aos-ready [data-aos] {
-      opacity: 0;
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    body.aos-ready [data-aos].aos-animate {
+    /* ── AOS: proper scroll-triggered animations ── */
+    /* AOS handles its own initial opacity/transform states */
+    /* Fallback: if AOS fails to load, ensure content is visible */
+    body:not(.aos-ready) [data-aos] {
       opacity: 1 !important;
       transform: none !important;
     }
@@ -1119,22 +1111,19 @@
      SCRIPTS
 ══════════════════════════════════════════════════════════════ -->
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ── GSAP Register ─────────────────────────────────────────
+  gsap.registerPlugin(ScrollTrigger);
+
   // ── AOS Init ──────────────────────────────────────────────
+  // Mark body BEFORE init so CSS transition rules apply from the start
+  document.body.classList.add('aos-ready');
   AOS.init({
     duration: 800,
     easing: 'ease-out-cubic',
     once: true,
-    offset: 60,
-    startEvent: 'DOMContentLoaded',
+    offset: 80,
   });
-  // Mark body as AOS-ready so animations can take over
-  document.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('aos-ready');
-    AOS.refresh();
-  });
-
-  // ── GSAP Register ─────────────────────────────────────────
-  gsap.registerPlugin(ScrollTrigger);
+  setTimeout(() => { AOS.refresh(); }, 100);
 
   // ── Navbar scroll effect ──────────────────────────────────
   const navbar = document.getElementById('navbar');
@@ -1179,23 +1168,43 @@
 
   // ── Animated counters (GSAP) ──────────────────────────────
   const counterEls = document.querySelectorAll('.stat-num');
+  let countersStarted = false;
+
+  function startCounters() {
+    if (countersStarted) return;
+    countersStarted = true;
+    counterEls.forEach(el => {
+      const target = parseInt(el.getAttribute('data-target'), 10);
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target,
+        duration: 2,
+        ease: 'power2.out',
+        onUpdate: function () {
+          el.textContent = Math.ceil(obj.val).toLocaleString();
+        },
+        onComplete: function () {
+          el.textContent = target.toLocaleString();
+        }
+      });
+    });
+  }
 
   ScrollTrigger.create({
     trigger: '#stats',
-    start: 'top 75%',
+    start: 'top 80%',
     once: true,
-    onEnter: () => {
-      counterEls.forEach(el => {
-        const target = parseInt(el.getAttribute('data-target'), 10);
-        gsap.to({ val: 0 }, {
-          val: target,
-          duration: 2,
-          ease: 'power2.out',
-          onUpdate: function () {
-            el.textContent = Math.ceil(this.targets()[0].val).toLocaleString();
-          }
-        });
-      });
+    onEnter: startCounters,
+  });
+
+  // Fallback: if stats section is already in view on load
+  window.addEventListener('load', function () {
+    const statsEl = document.getElementById('stats');
+    if (statsEl) {
+      const rect = statsEl.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        startCounters();
+      }
     }
   });
 
