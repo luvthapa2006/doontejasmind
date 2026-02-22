@@ -24,6 +24,25 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
+  <!-- Tailwind load detection: if CDN fails, apply minimal fallback -->
+  <script>
+    window.addEventListener('load', function() {
+      // Test if Tailwind loaded by checking a known class
+      var testEl = document.createElement('div');
+      testEl.className = 'hidden';
+      document.body.appendChild(testEl);
+      var isHidden = window.getComputedStyle(testEl).display === 'none';
+      document.body.removeChild(testEl);
+      if (!isHidden) {
+        // Tailwind didn't load - add fallback stylesheet
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
+        document.head.appendChild(link);
+      }
+    });
+  </script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -254,6 +273,39 @@
       transform: translateX(0);
     }
 
+    /* ── AOS fallback: ensure content never stays invisible ── */
+    [data-aos] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    /* Re-enable AOS transitions after JS loads */
+    body.aos-ready [data-aos] {
+      opacity: 0;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    body.aos-ready [data-aos].aos-animate {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    /* ── Critical section fallbacks (in case Tailwind CDN is slow/blocked) ── */
+    section { display: block; }
+    #about  { background: linear-gradient(135deg, #f8fafc, #eff6ff); padding: 7rem 1rem; }
+    #stats  { background: #ffffff; padding: 5rem 1rem; }
+    #community { background: linear-gradient(135deg, #0f172a, #1e3a5f, #0d9488); padding: 8rem 1rem; }
+    #courses { background: linear-gradient(135deg, #f8fafc, #eff6ff); padding: 7rem 1rem; }
+    #success { background: #ffffff; padding: 7rem 1rem; }
+    #how    { background: linear-gradient(135deg, #0f172a, #172554, #0f172a); padding: 7rem 1rem; }
+    footer  { background: #0f172a; color: #d1d5db; }
+    .max-w-7xl { max-width: 80rem; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+    .max-w-6xl { max-width: 72rem; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+    .max-w-4xl { max-width: 56rem; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+    h2.text-gray-900, h2 .text-gray-900 { color: #111827; }
+    p.text-gray-500, p.text-gray-600 { color: #6b7280; }
+    .text-white { color: #ffffff; }
+    .text-blue-200 { color: #bfdbfe; }
+
     /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #f0f4ff; }
@@ -353,23 +405,23 @@
           Home
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="about.html"    class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="#about"    class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
           About
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="courses.html"  class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="#courses"  class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
           Courses
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="student-zone.html" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="#community" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
           Student Zone
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="office-zone.html" class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="#how"      class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
           Office Solutions
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
-        <a href="contact.html"   class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
+        <a href="#footer"   class="nav-link text-gray-600 hover:text-brand-600 font-medium transition-colors text-sm relative group">
           Contact
           <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-500 to-teal-500 group-hover:w-full transition-all duration-300"></span>
         </a>
@@ -377,8 +429,8 @@
 
       <!-- CTA -->
       <div class="hidden md:flex items-center gap-3">
-        <a href="contact.html" class="btn-grad text-white text-sm font-semibold px-6 py-2.5 rounded-full shadow-lg">
-          <span>Contact Us</span>
+        <a href="#courses" class="btn-grad text-white text-sm font-semibold px-6 py-2.5 rounded-full shadow-lg">
+          <span>Get Started</span>
         </a>
       </div>
 
@@ -392,13 +444,13 @@
 
   <!-- Mobile menu -->
   <div id="mobile-menu" class="md:hidden flex-col bg-white/95 backdrop-blur-xl border-t border-gray-100 px-6 py-6 gap-4 shadow-xl">
-    <a href="index.html"      class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Home</a>
-    <a href="about.html"     class="text-gray-700 font-medium hover:text-brand-600 transition-colors">About</a>
-    <a href="courses.html"   class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Courses</a>
-    <a href="student-zone.html" class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Student Zone</a>
-    <a href="office-zone.html"       class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Office Solutions</a>
-    <a href="contact.html"    class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Contact</a>
-    <a href="contact.html"   class="btn-grad text-white font-semibold px-6 py-3 rounded-full text-center shadow-lg mt-2"><span>Contact Us</span></a>
+    <a href="#home"      class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Home</a>
+    <a href="#about"     class="text-gray-700 font-medium hover:text-brand-600 transition-colors">About</a>
+    <a href="#courses"   class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Courses</a>
+    <a href="#community" class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Student Zone</a>
+    <a href="#how"       class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Office Solutions</a>
+    <a href="#footer"    class="text-gray-700 font-medium hover:text-brand-600 transition-colors">Contact</a>
+    <a href="#courses"   class="btn-grad text-white font-semibold px-6 py-3 rounded-full text-center shadow-lg mt-2"><span>Get Started</span></a>
   </div>
 </nav>
 
@@ -1073,6 +1125,12 @@
     easing: 'ease-out-cubic',
     once: true,
     offset: 60,
+    startEvent: 'DOMContentLoaded',
+  });
+  // Mark body as AOS-ready so animations can take over
+  document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('aos-ready');
+    AOS.refresh();
   });
 
   // ── GSAP Register ─────────────────────────────────────────
