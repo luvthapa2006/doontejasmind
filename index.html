@@ -216,11 +216,23 @@
     }
     .expertise-card:hover::before { opacity: 1; }
     .expertise-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(29,114,238,0.18); }
+    .expertise-card::before { pointer-events: none; }
+    .expertise-card a { position: relative; z-index: 10; }
 
-    /* ── Step cards tilt ── */
+    /* ── Step cards: stable entry animation ── */
+    @keyframes stepCardIn {
+      from { opacity: 0; transform: translateY(36px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     .step-card {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
     }
+    .step-card.visible { animation: stepCardIn 0.55s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .step-card.visible:nth-child(1) { animation-delay: 0.05s; }
+    .step-card.visible:nth-child(2) { animation-delay: 0.18s; }
+    .step-card.visible:nth-child(3) { animation-delay: 0.31s; }
+    .step-card.visible:nth-child(4) { animation-delay: 0.44s; }
     .step-card:hover { box-shadow: 0 20px 45px rgba(29,114,238,0.2); }
 
     /* ── Stats section ── */
@@ -681,7 +693,7 @@
 ══════════════════════════════════════════════════════════════ -->
 <div class="relative overflow-hidden py-4" style="background:linear-gradient(135deg,#1d72ee,#14b8a6);box-shadow:0 4px 24px rgba(29,114,238,0.18);">
   <div class="absolute inset-0 opacity-10" style="background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0.3) 0px,rgba(255,255,255,0.3) 1px,transparent 1px,transparent 60px);"></div>
-  <div class="dtm-marquee-track flex items-center gap-0 whitespace-nowrap" style="animation:dtmMarquee 18s linear infinite;">
+  <div class="dtm-marquee-track flex items-center gap-0 whitespace-nowrap" style="animation:dtmMarquee 6s linear infinite;">
     <!-- Repeated enough times to fill seamlessly -->
     <span class="dtm-marquee-item"></span>
   </div>
@@ -783,6 +795,7 @@
           <span>Join the Community</span>
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         </a>
+
       </div>
 
       <!-- Avatar row -->
@@ -980,10 +993,10 @@
       <p class="text-blue-200 text-lg max-w-xl mx-auto">Getting started is simple. Four easy steps to unlock your academic potential.</p>
     </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="step-cards-grid">
 
       <!-- Step 1 -->
-      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer" data-aos="fade-up" data-aos-delay="0">
+      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer" >
         <div class="relative mb-6">
           <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-4xl shadow-2xl">📋</div>
           <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-brand-500 text-white text-sm font-black flex items-center justify-center shadow-lg">1</div>
@@ -993,7 +1006,7 @@
       </div>
 
       <!-- Step 2 -->
-      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer">
         <div class="relative mb-6">
           <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-4xl shadow-2xl">📅</div>
           <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-teal-500 text-white text-sm font-black flex items-center justify-center shadow-lg">2</div>
@@ -1003,7 +1016,7 @@
       </div>
 
       <!-- Step 3 -->
-      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer">
         <div class="relative mb-6">
           <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-4xl shadow-2xl">🎥</div>
           <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-amber-500 text-white text-sm font-black flex items-center justify-center shadow-lg">3</div>
@@ -1013,7 +1026,7 @@
       </div>
 
       <!-- Step 4 -->
-      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer" data-aos="fade-up" data-aos-delay="300">
+      <div class="step-card glass-dark rounded-2xl p-8 text-center cursor-pointer">
         <div class="relative mb-6">
           <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-4xl shadow-2xl">📈</div>
           <div class="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-pink-500 text-white text-sm font-black flex items-center justify-center shadow-lg">4</div>
@@ -1115,7 +1128,7 @@
             <div class="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center shrink-0">
               <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             </div>
-            <a href="/cdn-cgi/l/email-protection#2357464942504e4a4d47404f425050465063444e424a4f0d404c4e" class="text-gray-400 hover:text-brand-400 transition-colors text-sm"><span class="__cf_email__" data-cfemail="483c2d22293b2521262c2b24293b3b2d3b082f25292124662b2725">[email&#160;protected]</span></a>
+            <a href="mailto:tejasmindclasses@gmail.com" class="text-gray-400 hover:text-brand-400 transition-colors text-sm">tejasmindclasses@gmail.com</a>
           </li>
         </ul>
       </div>
@@ -1138,7 +1151,7 @@
 <!-- ═══════════════════════════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function () {
   'use strict';
 
@@ -1279,6 +1292,27 @@
       }
     });
   });
+
+
+  // ── Step cards: scroll-triggered animation ──────────────
+  (function() {
+    var grid = document.getElementById('step-cards-grid');
+    if (!grid) return;
+    var cards = grid.querySelectorAll('.step-card');
+    function triggerCards() {
+      cards.forEach(function(c) { c.classList.add('visible'); });
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) { triggerCards(); io.disconnect(); }
+        });
+      }, { threshold: 0.15 });
+      io.observe(grid);
+    } else {
+      triggerCards();
+    }
+  })();
 
   // ── Parallax orbs on mouse move ──────────────────────────
   if (window.matchMedia('(hover: hover)').matches) {
