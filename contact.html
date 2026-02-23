@@ -149,7 +149,7 @@
             </div>
             <div>
               <div class="text-xs font-bold text-teal-600 uppercase tracking-wider mb-1.5">EMAIL</div>
-              <a href="/cdn-cgi/l/email-protection#afdbcac5cedcc2c6c1cbccc3cedcdccadcefc8c2cec6c381ccc0c2" class="font-semibold text-gray-800 hover:text-teal-600 transition-colors text-sm break-all"><span class="__cf_email__" data-cfemail="5327363932203e3a3d37303f322020362013343e323a3f7d303c3e">[email&#160;protected]</span></a>
+              <a href="mailto:tejasmindclasses@gmail.com" class="font-semibold text-gray-800 hover:text-teal-600 transition-colors text-sm break-all">tejasmindclasses@gmail.com</a>
             </div>
           </div>
         </div>
@@ -193,19 +193,19 @@
           <form id="contact-form" class="space-y-5" onsubmit="handleSubmit(event)">
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-1.5">Name <span class="text-red-500">*</span></label>
-              <input type="text" placeholder="Your full name" class="input-field" required />
+              <input type="text" id="f-name" placeholder="Your full name" class="input-field" required />
             </div>
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-1.5">Email Address <span class="text-red-500">*</span></label>
-              <input type="email" placeholder="you@example.com" class="input-field" required />
+              <input type="email" id="f-email" placeholder="you@example.com" class="input-field" required />
             </div>
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-1.5">Phone Number <span class="text-red-500">*</span></label>
-              <input type="tel" placeholder="+91 XXXXX XXXXX" class="input-field" required />
+              <input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX" class="input-field" required />
             </div>
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-1.5">Message</label>
-              <textarea rows="5" maxlength="180" placeholder="Write your message here…" class="input-field" oninput="document.getElementById('char-count').textContent=this.value.length"></textarea>
+              <textarea rows="5" id="f-message" maxlength="180" placeholder="Write your message here…" class="input-field" oninput="document.getElementById('char-count').textContent=this.value.length"></textarea>
               <div class="char-counter"><span id="char-count">0</span> / 180</div>
             </div>
             <button type="submit" class="btn-grad w-full text-white font-bold py-4 rounded-xl text-base shadow-xl inline-flex items-center justify-center gap-2">
@@ -320,7 +320,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   document.body.classList.add('aos-ready');
   AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:80});
   setTimeout(function(){AOS.refresh();},150);
@@ -332,15 +332,32 @@
   gsap.from('#hero-contact-text > *',{opacity:0,y:40,duration:0.8,stagger:0.15,ease:'power3.out',delay:0.2});
   function handleSubmit(e){
     e.preventDefault();
-    const btn=e.target.querySelector('button[type="submit"]');
-    btn.disabled=true;
-    btn.querySelector('span').textContent='Sending…';
-    setTimeout(()=>{
+    var name    = document.getElementById('f-name').value.trim();
+    var email   = document.getElementById('f-email').value.trim();
+    var phone   = document.getElementById('f-phone').value.trim();
+    var message = document.getElementById('f-message').value.trim();
+    var text = [
+      '📩 *New Enquiry — Doon TejasMind*',
+      '',
+      '👤 *Name:* ' + name,
+      '📧 *Email:* ' + email,
+      '📞 *Phone:* ' + phone,
+      message ? '💬 *Message:* ' + message : ''
+    ].filter(Boolean).join('\n');
+    var waURL = 'https://wa.me/918981250205?text=' + encodeURIComponent(text);
+    window.open(waURL, '_blank');
+    // Show success state
+    var btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.querySelector('span').textContent = 'Sent via WhatsApp ✓';
+    setTimeout(function(){
       e.target.reset();
-      document.getElementById('char-count').textContent='0';
-      e.target.style.display='none';
+      document.getElementById('char-count').textContent = '0';
+      e.target.style.display = 'none';
       document.getElementById('success-msg').classList.remove('hidden');
-    },1200);
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'Send Message';
+    }, 1500);
   }
 </script>
 <script>
