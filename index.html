@@ -603,9 +603,9 @@
       <!-- Decorative image block -->
       <div class="relative">
         <div class="rounded-3xl overflow-hidden bg-gradient-to-br from-brand-500 to-teal-500 p-1 shadow-2xl">
-          <div class="rounded-[1.25rem] bg-gradient-to-br from-brand-100 to-teal-50 h-52 flex items-center justify-center">
-            <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="h-32 w-auto object-contain drop-shadow-xl" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div style="display:none;" class="w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg" style="background:linear-gradient(135deg,#1d72ee,#14b8a6);"><span class="text-white font-bold text-4xl">TM</span></div>
+          <div class="rounded-[1.25rem] bg-gradient-to-br from-brand-100 to-teal-50 h-52 flex items-center justify-center overflow-hidden">
+            <img src="https://i.ibb.co/4nQnWTvp/tejasmind.png" alt="Doon TejasMind" class="w-full h-full object-contain p-6 drop-shadow-xl" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;background:linear-gradient(135deg,#1d72ee,#14b8a6);"><span style="color:white;font-weight:900;font-size:2.5rem;">TM</span></div>
           </div>
         </div>
         <!-- Floating badge -->
@@ -675,6 +675,38 @@
   </div>
 </section>
 
+
+<!-- ═══════════════════════════════════════════════════════════
+     MARQUEE STRIPE
+══════════════════════════════════════════════════════════════ -->
+<div class="relative overflow-hidden py-4" style="background:linear-gradient(135deg,#1d72ee,#14b8a6);box-shadow:0 4px 24px rgba(29,114,238,0.18);">
+  <div class="absolute inset-0 opacity-10" style="background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0.3) 0px,rgba(255,255,255,0.3) 1px,transparent 1px,transparent 60px);"></div>
+  <div class="dtm-marquee-track flex items-center gap-0 whitespace-nowrap" style="animation:dtmMarquee 18s linear infinite;">
+    <!-- Repeated enough times to fill seamlessly -->
+    <span class="dtm-marquee-item"></span>
+  </div>
+  <style>
+    @keyframes dtmMarquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .dtm-marquee-track {
+      will-change: transform;
+    }
+  </style>
+  <script>
+    (function(){
+      var text = 'ज्ञान की ज्योति कर्म से - राह विजय की ओर';
+      var sep  = '<span style="opacity:0.5;margin:0 2rem;">✦</span>';
+      var item = '<span style="font-family:\'Noto Sans Devanagari\',sans-serif;font-size:1.125rem;font-weight:700;letter-spacing:0.04em;color:white;">' + text + '</span>' + sep;
+      var track = document.querySelector('.dtm-marquee-track');
+      // Build 20 copies for a seamless loop
+      var html = '';
+      for(var i=0;i<20;i++) html += item;
+      track.innerHTML = html;
+    })();
+  </script>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════
      STATS / COUNTERS SECTION
@@ -1086,7 +1118,7 @@
             <div class="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center shrink-0">
               <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             </div>
-            <a href="/cdn-cgi/l/email-protection#add9c8c7ccdec0c4c3c9cec1ccdedec8deedcac0ccc4c183cec2c0" class="text-gray-400 hover:text-brand-400 transition-colors text-sm"><span class="__cf_email__" data-cfemail="b9cddcd3d8cad4d0d7dddad5d8cacadccaf9ded4d8d0d597dad6d4">[email&#160;protected]</span></a>
+            <a href="mailto:tejasmindclasses@gmail.com" class="text-gray-400 hover:text-brand-400 transition-colors text-sm">tejasmindclasses@gmail.com</a>
           </li>
         </ul>
       </div>
@@ -1109,7 +1141,7 @@
 <!-- ═══════════════════════════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function () {
   'use strict';
 
